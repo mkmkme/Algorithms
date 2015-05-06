@@ -9,13 +9,10 @@ int find_path(int u, int v, int f)
     if (u == v)
         return f;
     use[u] = 1;
-    for (int i = 0; i < n; ++i)
-    {
-        if (!use[i] && a[u][i] != 0)
-        {
+    for (int i = 0; i < n; ++i) {
+        if (!use[i] && a[u][i] != 0) {
             int df = find_path(i, v, min(f, a[u][i]));
-            if (df > 0)
-            {
+            if (df > 0) {
                 a[u][i] -= df;
                 a[i][u] += df;
                 return df;
@@ -27,8 +24,7 @@ int find_path(int u, int v, int f)
 
 int max_flow(int s, int t)
 {
-    for (int flow = 0; ; )
-    {
+    for (int flow = 0; ; ) {
         int df = find_path(s, t, 1000000);
         if (df == 0)
             return flow;
@@ -45,8 +41,7 @@ int main()
     cin >> n;
     cout << "Введите количество рёбер\n";
     cin >> m;
-    for (int i = 0; i < m; ++i)
-    {
+    for (int i = 0; i < m; ++i) {
         cin >> u >> v >> w;
         a[u][v] = w;
     }
@@ -54,4 +49,3 @@ int main()
     cout << tmp << endl;
     return 0;
 }
-
