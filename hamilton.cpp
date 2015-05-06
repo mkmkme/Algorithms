@@ -23,8 +23,7 @@ int main()
     cin >> n;
     cout << "Введите количество рёбер\n";
     cin >> m;
-    for (int i = 0; i < m; ++i)
-    {
+    for (int i = 0; i < m; ++i) {
         cin >> u >> v >> w;
         a[u][v] = a[v][u] = w;
     }

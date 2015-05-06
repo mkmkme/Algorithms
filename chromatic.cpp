@@ -25,13 +25,11 @@ int check()
 
 void hromatic(int x) // x == position
 {
-    if (x == n)
-    {
+    if (x == n) {
         ans = min(ans, check());
         return;
     }
-    for (int i = 1; i <= n; ++i)
-    {
+    for (int i = 1; i <= n; ++i) {
         color[x] = i;
         hromatic(x + 1);
     }
@@ -45,9 +43,7 @@ int main()
     cout << "Введите количество рёбер\n";
     cin >> m;
     for (int i = 0; i < m; ++i)
-    {
         cin >> g[i].x >> g[i].y;
-    }
     hromatic(0);
     cout << ans << endl;
     return 0;
