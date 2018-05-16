@@ -31,17 +31,6 @@ public:
                 push(atoi(s.substr(i - 9, 9).c_str()));
         trim();
     }
-    lnum operator+(const lnum& rhs) const
-    {
-        lnum ret = *this;
-        int carry = 0;
-        for (size_t i = 0; i < max(ret.size(), rhs.size()) || carry; ++i) {
-            if (i == ret.size()) ret.push(0);
-            ret[i] += carry + (i < rhs.size() ? rhs[i] : 0);
-            if ((carry = ret[i] >= BASE)) ret[i] -= BASE;
-        }
-        return ret;
-    }
     lnum& operator+=(const lnum& rhs)
     {
         int carry = 0;
@@ -52,15 +41,10 @@ public:
         }
         return *this;
     }
-    lnum operator-(const lnum& rhs) const
+    lnum operator+(const lnum& rhs) const
     {
         lnum ret = *this;
-        int carry = 0;
-        for (size_t i = 0; i < rhs.size() || carry; ++i) {
-            ret[i] -= carry + (i < rhs.size() ? rhs[i] : 0);
-            if ((carry = ret[i] < 0)) ret[i] += BASE;
-        }
-        ret.trim();
+        ret += rhs;
         return ret;
     }
     lnum& operator-=(const lnum& rhs)
@@ -73,17 +57,10 @@ public:
         trim();
         return *this;
     }
-    lnum operator*(unsigned n) const
+    lnum operator-(const lnum& rhs)
     {
         lnum ret = *this;
-        int carry = 0;
-        for (size_t i = 0; i < ret.size() || carry; ++i) {
-            if (i == ret.size()) ret.push(0);
-            long long cur = carry + ret[i] * 1ll * n;
-            ret[i] = int(cur % BASE);
-            carry = int(cur / BASE);
-        }
-        ret.trim();
+        ret -= rhs;
         return ret;
     }
     lnum& operator*=(unsigned n)
@@ -98,19 +75,10 @@ public:
         trim();
         return *this;
     }
-    lnum operator*(const lnum& n) const
+    lnum operator*(unsigned n)
     {
-        lnum ret;
-        ret._data = vector<int>(size() + n.size());
-        for (size_t i = 0; i < size(); ++i) {
-            int carry = 0;
-            for (size_t j = 0; j < n.size() || carry; ++j) {
-                long long cur = ret[i + j] + _data[i] * 1ll * (j < n.size() ? n[j] : 0) + carry;
-                ret[i + j] = int(cur % BASE);
-                carry = int(cur / BASE);
-            }
-        }
-        ret.trim();
+        lnum ret = *this;
+        ret *= n;
         return ret;
     }
     lnum& operator*=(const lnum& n)
@@ -128,19 +96,13 @@ public:
         trim();
         return *this;
     }
-    lnum operator/(unsigned n) const
+    lnum operator*(const lnum& n)
     {
         lnum ret = *this;
-        int carry = 0;
-        for (int i = (int)size() - 1; i >= 0; --i) {
-            long long cur = _data[i] + carry * 1ll * BASE;
-            ret[i] = int(cur / n);
-            carry = int(cur % n);
-        }
-        ret.trim();
+        ret *= n;
         return ret;
     }
-    lnum& operator/(unsigned n)
+    lnum& operator/=(unsigned n)
     {
         int carry = 0;
         for (int i = (int)size() - 1; i >= 0; --i) {
@@ -150,6 +112,12 @@ public:
         }
         trim();
         return *this;
+    }
+    lnum operator/(unsigned n)
+    {
+        lnum ret = *this;
+        ret /= n;
+        return ret;
     }
     unsigned operator%(unsigned n)
     {
@@ -173,9 +141,11 @@ ostream& operator<<(ostream& os, const lnum& n)
 
 int main(int argc, char *argv[])
 {
-    lnum ln("1234567890987654321234567890987654321234567890");
+    lnum ln("1000000000000000000000000000000000000000000000000000000000");
     cout << ln << endl;
     cout << ln * 12345 << endl;
     cout << ln * ln << endl;
+    cout << ln / 2 << endl;
+    cout << ln + (ln + lnum("1")) << endl;
     return 0;
 }
