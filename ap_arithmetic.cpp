@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 
+// http://e-maxx.ru/algo/big_integer
+
 using namespace std;
 
 class lnum
