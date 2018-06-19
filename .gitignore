@@ -1,3 +1,6 @@
-*.swp
-build
-CMakeLists.txt.user
+.ninja*
+ap_arithmetic
+chromatic
+hamilton
+max_flow
+max_path

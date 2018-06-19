@@ -1,0 +1,21 @@
+# Created by configure.py
+# DO NOT EDIT
+
+cxx = /usr/bin/c++
+cxxflags = -std=c++1z -Wall -Wextra -g -D_GNU_SOURCE
+dbus_cflags = -I/usr/include/dbus-1.0 -I/usr/lib64/dbus-1.0/include
+dbus_libs = -ldbus-1
+ninja = /usr/bin/ninja
+
+rule link
+  command = $cxx $cxxflags -o $out $in
+  description = CXXLD $out
+rule link-dbus
+  command = $cxx $cxxflags $dbus_cflags -o $out $in $dbus_libs
+  description = CXXLD $out
+
+build ap_arithmetic: link ap_arithmetic.cpp
+build chromatic: link chromatic.cpp
+build hamilton: link hamilton.cpp
+build max_flow: link max_flow.cpp
+build max_path: link max_path.cpp
