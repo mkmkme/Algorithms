@@ -11,14 +11,36 @@ class lnum
 private:
     const int BASE = 1000 * 1000 * 1000;
     vector<int> _data;
-    size_t size() const { return _data.size(); }
-    const int& operator[](size_t i) const { return _data[i]; }
-    int& operator[](size_t i) { return _data[i]; }
-    void push(int i) { _data.push_back(i); }
-    void pop() { _data.pop_back(); }
+
+    size_t size() const
+    {
+        return _data.size();
+    }
+
+    const int& operator[](size_t i) const
+    {
+        return _data[i];
+    }
+
+    int& operator[](size_t i)
+    {
+        return _data[i];
+    }
+
+    void push(int i)
+    {
+        _data.push_back(i);
+    }
+
+    void pop()
+    {
+        _data.pop_back();
+    }
+
     void trim()
     {
-        while (_data.size() > 1 && _data.back() == 0) _data.pop_back();
+        while (_data.size() > 1 && _data.back() == 0)
+            _data.pop_back();
     }
 public:
     lnum() = default;
@@ -31,43 +53,54 @@ public:
                 push(atoi(s.substr(i - 9, 9).c_str()));
         trim();
     }
+
     lnum& operator+=(const lnum& rhs)
     {
         int carry = 0;
         for (size_t i = 0; i < max(size(), rhs.size()) || carry; ++i) {
-            if (i == size()) push(0);
+            if (i == size())
+                push(0);
+
             _data[i] += carry + (i < rhs.size() ? rhs[i] : 0);
-            if ((carry = _data[i] >= BASE)) _data[i] -= BASE;
+
+            if ((carry = _data[i] >= BASE))
+                _data[i] -= BASE;
         }
         return *this;
     }
+
     lnum operator+(const lnum& rhs) const
     {
         lnum ret = *this;
         ret += rhs;
         return ret;
     }
+
     lnum& operator-=(const lnum& rhs)
     {
         int carry = 0;
         for (size_t i = 0; i < rhs.size() || carry; ++i) {
             _data[i] -= carry + (i < rhs.size() ? rhs[i] : 0);
-            if ((carry = _data[i] < 0)) _data[i] += BASE;
+            if ((carry = _data[i] < 0))
+                _data[i] += BASE;
         }
         trim();
         return *this;
     }
+
     lnum operator-(const lnum& rhs)
     {
         lnum ret = *this;
         ret -= rhs;
         return ret;
     }
+
     lnum& operator*=(unsigned n)
     {
         int carry = 0;
         for (size_t i = 0; i < size() || carry; ++i) {
-            if (i == size()) push(0);
+            if (i == size())
+                push(0);
             long long cur = carry + _data[i] * 1ll * n;
             _data[i] = int(cur % BASE);
             carry = int(cur / BASE);
@@ -75,12 +108,14 @@ public:
         trim();
         return *this;
     }
+
     lnum operator*(unsigned n)
     {
         lnum ret = *this;
         ret *= n;
         return ret;
     }
+
     lnum& operator*=(const lnum& n)
     {
         vector<int> data = _data;
@@ -96,12 +131,14 @@ public:
         trim();
         return *this;
     }
+
     lnum operator*(const lnum& n)
     {
         lnum ret = *this;
         ret *= n;
         return ret;
     }
+
     lnum& operator/=(unsigned n)
     {
         int carry = 0;
@@ -113,12 +150,14 @@ public:
         trim();
         return *this;
     }
+
     lnum operator/(unsigned n)
     {
         lnum ret = *this;
         ret /= n;
         return ret;
     }
+
     unsigned operator%(unsigned n)
     {
         int carry = 0;
@@ -128,6 +167,7 @@ public:
         }
         return carry;
     }
+
     friend ostream& operator<<(ostream&, const lnum&);
 };
 
