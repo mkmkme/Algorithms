@@ -88,7 +88,7 @@ public:
         return *this;
     }
 
-    lnum operator-(const lnum& rhs)
+    lnum operator-(const lnum& rhs) const
     {
         lnum ret = *this;
         ret -= rhs;
@@ -109,7 +109,7 @@ public:
         return *this;
     }
 
-    lnum operator*(unsigned n)
+    lnum operator*(unsigned n) const
     {
         lnum ret = *this;
         ret *= n;
@@ -132,7 +132,7 @@ public:
         return *this;
     }
 
-    lnum operator*(const lnum& n)
+    lnum operator*(const lnum& n) const
     {
         lnum ret = *this;
         ret *= n;
@@ -151,14 +151,14 @@ public:
         return *this;
     }
 
-    lnum operator/(unsigned n)
+    lnum operator/(unsigned n) const
     {
         lnum ret = *this;
         ret /= n;
         return ret;
     }
 
-    unsigned operator%(unsigned n)
+    unsigned operator%(unsigned n) const
     {
         int carry = 0;
         for (int i = (int)size() - 1; i >= 0; --i) {
