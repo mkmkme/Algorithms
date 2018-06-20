@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 
+#include <cstring>
+
 // http://e-maxx.ru/algo/big_integer
 
 using namespace std;
@@ -179,13 +181,58 @@ ostream& operator<<(ostream& os, const lnum& n)
     return os;
 }
 
-int main(int argc, char *argv[])
+bool goodlnum(const string& s)
 {
-    lnum ln("1000000000000000000000000000000000000000000000000000000000");
-    cout << ln << endl;
-    cout << ln * 12345 << endl;
-    cout << ln * ln << endl;
-    cout << ln / 2 << endl;
-    cout << ln + (ln + lnum("1")) << endl;
+    for (const char& c : s)
+        if (!isdigit(c))
+            return false;
+    return true;
+}
+
+int main()
+{
+    string stra, strb;
+    char op;
+    cout << "expr: " << flush;
+    cin >> stra >> op >> strb;
+    if (cin.fail() || !goodlnum(stra)) {
+        cerr << "syntax error\n";
+        return 2;
+    }
+    lnum a(stra);
+    if (op == '+' || op == '-') {
+        if (!goodlnum(strb)) {
+            cerr << "syntax error\n";
+            return 2;
+        }
+        lnum b(strb);
+        if (op == '+')
+            cout << a + b << endl;
+        else
+            cout << a - b << endl;
+    } else if (strchr("*/%", op)) {
+        char *e = nullptr;
+        unsigned long bb = strtoul(strb.c_str(), &e, 10);
+        if (e == strb.c_str() || *e || (unsigned long)(unsigned)bb != bb) {
+            cerr << "right num error\n";
+            return 2;
+        }
+        unsigned b = bb;
+        switch (op) {
+        case '*':
+            cout << a * b << endl;
+            break;
+        case '/':
+            cout << a / b << endl;
+            break;
+        case '%':
+            cout << a % b << endl;
+            break;
+        }
+    } else {
+        cerr << "syntax error\n";
+        return 2;
+    }
+
     return 0;
 }
